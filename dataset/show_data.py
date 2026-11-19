@@ -15,5 +15,3 @@ for filename in os.listdir(folder_path):
 
 plt.imshow(images_all[1])
 plt.show()
-
-
