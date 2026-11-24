@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from fast_plate_ocr import LicensePlateRecognizer
 import torch
 
-
 def draw_box(image, x1, y1, x2, y2, thickness):
     """Caixa vermelha com contorno branco por baixo (visível mesmo em carros vermelhos)."""
     cv2.rectangle(image, (x1, y1), (x2, y2), (255, 255, 255), thickness + 2)
@@ -51,7 +50,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
 folder_path = 'C:\\Users\\filip\\Documents\\My Projects\\Python\\Licence_Plates_Identifier\\dataset\\lp_data\\datasets\\all_data'
-image_number = 2
+image_number = 3
 
 image_name = os.listdir(folder_path)[image_number]
 img = cv2.imread(os.path.join(folder_path, image_name))
@@ -87,6 +86,9 @@ for box in boxes:
 
     ocr_result = license_plate_recognizer.run(cropped_image, return_confidence=True)
     text = ocr_result[0].plate
+
+    if str(text) == '':
+        text = "Can't detected"
 
     draw_box(output, x1, y1, x2, y2, box_thickness)
     draw_label(output, text, x1, y1, y2, font_scale, text_thickness)
